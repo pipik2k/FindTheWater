@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class LevelSetting : MonoBehaviour
@@ -12,14 +13,17 @@ public class LevelSetting : MonoBehaviour
         FiveByFive,
         SevenByFive
     }
+
     public GridType gridType;
+    public float cellSize = 1f;       
+    public float padding = 1;       
 
     private void Awake()
     {
         SetCameraByGridType();
-        SetGameStart();
     }
-    void Start()
+
+    private void Start()
     {
         foreach (var pipe in endPipes)
         {
@@ -27,38 +31,28 @@ public class LevelSetting : MonoBehaviour
         }
     }
 
-    void SetGameStart()
-    {
-        GameManager.Instance.ChangeGameState(GameState.Play);
-    }
     void SetCameraByGridType()
     {
+        int width = 3, height = 3;
         switch (gridType)
         {
-            case GridType.ThreeByThree:
-                var fieldOfView3x3 = 30;
-                SetCamera(fieldOfView3x3);
-                break;
-            case GridType.FourByFour:
-                var fieldOfView4x4 = 39;
-                SetCamera(fieldOfView4x4);
-                break;
-            case GridType.FiveByFive:
-                var fieldOfView5x5 = 48;
-                SetCamera(fieldOfView5x5);
-                break;
-            case GridType.SevenByFive:
-                var fieldOfView7x5 = 48;
-                SetCamera(fieldOfView7x5);
-                break;
+            case GridType.ThreeByThree: width = height = 3; break;
+            case GridType.FourByFour: width = height = 4; break;
+            case GridType.FiveByFive: width = height = 5; break;
+            case GridType.SevenByFive: width = 5; height = 7; break;
         }
+
+        SetOrthographicCamera(width, height);
     }
 
-    void SetCamera(int fieldofView)
+    void SetOrthographicCamera(int gridWidth, int gridHeight)
     {
-        var camera = Camera.main;
-        camera.fieldOfView = fieldofView;
+        float targetWidth = gridWidth;
+        float screenAspect = (float)Screen.width / Screen.height;
+        float cameraSize = targetWidth / (2f * screenAspect);
+        Camera.main.orthographicSize = cameraSize;
     }
+
     void GameWin()
     {
         if (CheckWinGame())
@@ -71,10 +65,7 @@ public class LevelSetting : MonoBehaviour
     {
         foreach (var pipe in endPipes)
         {
-            if (!pipe.HasWater)
-            {
-                return false;
-            }
+            if (!pipe.HasWater) return false;
         }
         return true;
     }

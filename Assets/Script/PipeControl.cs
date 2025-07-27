@@ -27,6 +27,7 @@ public class PipeControl : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!GameManager.Instance.IsGamePlay()) return;
         if (pipeAction != PipeAction.Normal) return;
         RotatePipe();
         PlayClickSfx();

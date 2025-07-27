@@ -57,7 +57,6 @@ public class LevelHold : MonoBehaviour
 
     void OnLevelButtonClicked(int level)
     {
-        Debug.Log($"Level {level} button clicked!");
         GameManager.Instance.SpawnLevel(level);
         this.gameObject.SetActive(false);
     }

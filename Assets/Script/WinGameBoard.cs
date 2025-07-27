@@ -30,7 +30,7 @@ public class WinGameBoard : MonoBehaviour
 
     public void UpdateText()
     {
-        levelTxt.text = $"Level '{GameManager.Instance.Level}'";
+        levelTxt.text = $"Level {GameManager.Instance.Level}";
     }
     private void SetLevel(int level)
     {

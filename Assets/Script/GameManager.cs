@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public event Action onGamePlay;
     private int level;
     private int levelCount = 20;
+    [SerializeField]
     private GameState GameState;
     [SerializeField]
     LevelManager levelManager;
@@ -34,11 +35,19 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
+    public bool IsGamePlay()
+    {
+        return GameState == GameState.Play;
+    }
     public void SpawnLevel(int level)
     {
         this.level = level;
         levelManager.SpawnLevel(level);
-    } 
+        ChangeGameState(GameState.Play);
+    }
+    public void ResetGameState()
+    {
+        ChangeGameState(GameState.None);
+    }
 }
-public enum GameState { Play, Win }
+public enum GameState {None, Play, Win }

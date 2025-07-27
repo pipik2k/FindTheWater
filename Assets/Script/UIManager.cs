@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<GameObject> panels;
     [SerializeField] private float wipeDuration = 0.5f;
     [SerializeField] WinGameBoard WinGameBoard;
+    [SerializeField] GameObject gamePlayUI;
 
     private void Start()
     {
         GameManager.Instance.onGameWin += OpenGameBoard;
+        GameManager.Instance.onGamePlay += OpenGamePlayUI;
+    }
+
+    private void OpenGamePlayUI()
+    {
+        gamePlayUI.SetActive(true);
     }
 
     private void OnDestroy()
